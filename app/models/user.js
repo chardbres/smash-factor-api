@@ -6,6 +6,12 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true
   },
+  age: {
+    type: Number
+  },
+  swingSpeed: {
+    type: Number
+  },
   hashedPassword: {
     type: String,
     required: true

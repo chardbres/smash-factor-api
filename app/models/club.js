@@ -1,13 +1,14 @@
 const mongoose = require('mongoose')
 
-const exampleSchema = new mongoose.Schema({
-  title: {
-    type: String
-  },
-  text: {
+const clubSchema = new mongoose.Schema({
+  style: {
     type: String,
     required: true
   },
+  brand: {
+    type: String
+  },
+  stiffness: String,
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
@@ -17,4 +18,4 @@ const exampleSchema = new mongoose.Schema({
   timestamps: true
 })
 
-module.exports = mongoose.model('Example', exampleSchema)
+module.exports = mongoose.model('Club', clubSchema)
