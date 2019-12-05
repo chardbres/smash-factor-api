@@ -3,12 +3,14 @@ const mongoose = require('mongoose')
 const clubSchema = new mongoose.Schema({
   style: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   brand: {
     type: String
   },
   stiffness: String,
+  loft: Number,
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',

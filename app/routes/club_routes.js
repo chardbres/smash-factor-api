@@ -62,7 +62,7 @@ router.post('/clubs', requireToken, (req, res, next) => {
 
 // UPDATE
 router.patch('/clubs/:id', requireToken, removeBlanks, (req, res, next) => {
-  delete req.body.example.owner
+  delete req.body.club.owner
 
   Club.findById(req.params.id)
     .then(handle404)
