@@ -3,7 +3,8 @@ const mongoose = require('mongoose')
 const clubSchema = new mongoose.Schema({
   style: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   brand: {
     type: String
