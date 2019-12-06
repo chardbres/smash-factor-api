@@ -13,7 +13,7 @@ curl "${API}${URL_PATH}" \
       "style": "'"${STYLE}"'",
       "brand": "'"${BRAND}"'",
       "loft": "'"${LOFT}"'",
-      "stiffness": "'"${STIFFNESS}"'"
+      "flex": "'"${flex}"'"
     }
   }'
 

@@ -29,8 +29,8 @@ const router = express.Router()
 
 // INDEX
 router.get('/clubs', requireToken, (req, res, next) => {
-  Club.find()
-    .then(console.log('got clubs!'))
+  // Ensures that the server only returns resources for which the owner matches the incoming user id
+  Club.find({ owner: req.user._id })
     .then(clubs => {
       return clubs.map(club => club.toObject())
     })

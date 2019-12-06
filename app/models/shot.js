@@ -8,12 +8,6 @@ const shotSchema = new mongoose.Schema({
   quality: {
     type: String
   },
-  lie: {
-    type: String
-  },
-  stiffness: {
-    type: String
-  },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Club',
