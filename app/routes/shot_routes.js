@@ -28,8 +28,9 @@ const requireToken = passport.authenticate('bearer', { session: false })
 const router = express.Router()
 
 // INDEX
-router.get('', requireToken, (req, res, next) => {
-  Shot.find()
+router.get('clubs/:id/shots', requireToken, (req, res, next) => {
+  // Ensures that the server only returns resources for which the owner matches the incoming club id
+  Shot.find({ owner: req.club._id})
     .then(shots => {
       return shots.map(shot => shot.toObject())
     })
@@ -38,54 +39,54 @@ router.get('', requireToken, (req, res, next) => {
 })
 // ----------
 
-// SHOW
-router.get('', requireToken, (req, res, next) => {
-  Shot.findById(req.params.id)
-    .then(handle404)
-    .then(club => res.status(200).json({ club: club.toObject() }))
-    .catch(next)
-})
-// ----------
-
-// CREATE
-router.post('/shots', requireToken, (req, res, next) => {
-  req.body.club.owner = req.user.id
-
-  Shot.create(req.body.club)
-    .then(club => {
-      res.status(201).json({ club: club.toObject() })
-    })
-    .catch(next)
-})
-// ----------
-
-// UPDATE
-router.patch('/shots/:id', requireToken, removeBlanks, (req, res, next) => {
-  delete req.body.club.owner
-
-  Shot.findById(req.params.id)
-    .then(handle404)
-    .then(club => {
-      requireOwnership(req, club)
-
-      return club.updateOne(req.body.club)
-    })
-    .then(() => res.sendStatus(204))
-    .catch(next)
-})
-// ----------
-
-// DESTROY
-router.delete('/shots/:id', requireToken, (req, res, next) => {
-  Shot.findById(req.params.id)
-    .then(handle404)
-    .then(club => {
-      requireOwnership(req, club)
-      club.deleteOne()
-    })
-    .then(() => res.sendStatus(204))
-    .catch(next)
-})
-// ----------
+// // SHOW
+// router.get('clubs/:id/shots', requireToken, (req, res, next) => {
+//   Shot.findById(req.params.id)
+//     .then(handle404)
+//     .then(club => res.status(200).json({ club: club.toObject() }))
+//     .catch(next)
+// })
+// // ----------
+//
+// // CREATE
+// router.post('/shots', requireToken, (req, res, next) => {
+//   req.body.club.owner = req.user.id
+//
+//   Shot.create(req.body.club)
+//     .then(club => {
+//       res.status(201).json({ club: club.toObject() })
+//     })
+//     .catch(next)
+// })
+// // ----------
+//
+// // UPDATE
+// router.patch('/shots/:id', requireToken, removeBlanks, (req, res, next) => {
+//   delete req.body.club.owner
+//
+//   Shot.findById(req.params.id)
+//     .then(handle404)
+//     .then(club => {
+//       requireOwnership(req, club)
+//
+//       return club.updateOne(req.body.club)
+//     })
+//     .then(() => res.sendStatus(204))
+//     .catch(next)
+// })
+// // ----------
+//
+// // DESTROY
+// router.delete('/shots/:id', requireToken, (req, res, next) => {
+//   Shot.findById(req.params.id)
+//     .then(handle404)
+//     .then(club => {
+//       requireOwnership(req, club)
+//       club.deleteOne()
+//     })
+//     .then(() => res.sendStatus(204))
+//     .catch(next)
+// })
+// // ----------
 
 module.exports = router
