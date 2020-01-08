@@ -28,9 +28,9 @@ const requireToken = passport.authenticate('bearer', { session: false })
 const router = express.Router()
 
 // INDEX
-router.get('clubs/:id/shots', requireToken, (req, res, next) => {
-  // Ensures that the server only returns resources for which the owner matches the incoming club id
-  Shot.find({ owner: req.club._id})
+router.get('/shots', requireToken, (req, res, next) => {
+  // Filters the response to include only shots for the incoming club ID
+  Shot.find({ club: req.headers.id})
     .then(shots => {
       return shots.map(shot => shot.toObject())
     })
@@ -39,8 +39,20 @@ router.get('clubs/:id/shots', requireToken, (req, res, next) => {
 })
 // ----------
 
+// CREATE
+router.post('/shots', requireToken, (req, res, next) => {
+  req.body.shot.owner = req.user.id
+
+  Shot.create(req.body.shot)
+    .then(shot => {
+      res.status(201).json({ shot: shot.toObject() })
+    })
+    .catch(next)
+})
+// ----------
+
 // // SHOW
-// router.get('clubs/:id/shots', requireToken, (req, res, next) => {
+// router.get('', requireToken, (req, res, next) => {
 //   Shot.findById(req.params.id)
 //     .then(handle404)
 //     .then(club => res.status(200).json({ club: club.toObject() }))
@@ -48,18 +60,7 @@ router.get('clubs/:id/shots', requireToken, (req, res, next) => {
 // })
 // // ----------
 //
-// // CREATE
-// router.post('/shots', requireToken, (req, res, next) => {
-//   req.body.club.owner = req.user.id
-//
-//   Shot.create(req.body.club)
-//     .then(club => {
-//       res.status(201).json({ club: club.toObject() })
-//     })
-//     .catch(next)
-// })
-// // ----------
-//
+
 // // UPDATE
 // router.patch('/shots/:id', requireToken, removeBlanks, (req, res, next) => {
 //   delete req.body.club.owner

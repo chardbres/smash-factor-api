@@ -9,9 +9,13 @@ const shotSchema = new mongoose.Schema({
   quality: {
     type: String
   },
+  club: {
+    type: String,
+    required: true
+  },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Club',
+    ref: 'User',
     required: true
   }
 }, {
